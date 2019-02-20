@@ -1,9 +1,13 @@
+//Import the mongoose module
+var mongoose = require('mongoose');
 
-//connect to mongoDB
-mongoose.connect('mongodb+srv://<anonymous>:<anonymous>@logindb-mq5d7.mongodb.net/test?retryWrites=true');
+//Set up default mongoose connection
+var mongoDB = 'mongodb+srv://anonymous:<anonymous>@logindb-mq5d7.mongodb.net/test?retryWrites=true';
+mongoose.connect(mongoDB);
+// Get Mongoose to use the global promise library
+mongoose.Promise = global.Promise;
+//Get the default connection
+var db = mongoose.connection;
 
-mongoose.connection.once('open', function(){
-	console.log('Connection has been made, now make fireworks');
-}).on('error'.function(error){
-	console.log('Connection error:', error);
-});
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
